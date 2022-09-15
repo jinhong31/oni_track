@@ -1,0 +1,105 @@
+body {
+  color: gray;
+  background-color: black;
+  font-weight: bold;
+  font-family: 'Play', sans-serif;
+}
+
+.logo-img {
+  max-width: 100%;
+}
+
+.elementor-icon {
+  background-color: #E40404;
+  border-radius: 50%;
+  padding: 0.5em;
+  color: #fff;
+  display: inline-block;
+  transition: all .3s;
+  font-size: 50px;
+  text-align: center;
+
+}
+
+.elementor-icon i, .elementor-icon svg {
+  width: 1em;
+  height: 1em;
+  position: relative;
+  display: block;
+}
+
+.elementor-heading-title {
+  color: #E40404;
+  font-family: "Island Moments", Sans-serif;
+  font-weight: 600;
+}
+
+.social-icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+h2{
+  font-size: 48px;
+}
+
+.state-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+
+}
+.active-icon {
+  background-color: green;
+}
+
+.inactive-icon {
+  background-color: red;
+}
+
+.before-icon {
+  background-color: yellow;
+}
+
+.state-div {
+  padding-left: 40px;
+}
+
+.state-content {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+}
+.state-statement {
+  color: rgb(16, 240, 83);
+  font-size: 35px;
+  font-family: "Island Moments", Sans-serif;
+  margin-bottom: 0;
+}
+
+.connection-state {
+  color: yellow;
+  font-size: 35px;
+  font-family: "Island Moments", Sans-serif;
+}
+@media only screen and (max-width: 600px) {
+  .btnd {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .cardzeu {
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .card {
+    margin-bottom: 10px;
+  }
+
+  h2{
+    font-size: 36px;
+  }
+}
