@@ -79,6 +79,12 @@ h2{
   margin-bottom: 0;
 }
 
+.state-error {
+  color: red;
+  font-size: 35px;
+  font-family: "Island Moments", Sans-serif;
+  margin-bottom: 0;
+}
 .connection-state {
   color: yellow;
   font-size: 35px;

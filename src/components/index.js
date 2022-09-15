@@ -3,7 +3,7 @@ import web3ModalSetup from "./../helpers/web3ModalSetup";
 import Web3 from "web3";
 import getAbi from "../Abi";
 import logo from "./../assets/logo.webp";
-import {networkChainId} from "./../helpers/web3ModalSetup";
+import { networkChainId } from "./../helpers/web3ModalSetup";
 // import { CONTRACTADDR } from "../Abi";
 
 const web3Modal = web3ModalSetup();
@@ -20,6 +20,7 @@ const Interface = () => {
   const [jeetState, setJeetState] = useState(false);
   const [jeetPreventTime, setJeetProventTime] = useState(0);
   const [blockTime, setBlockTime] = useState(0);
+  const [counterTime, setCounterTime] = useState(0);
   const [currentChainId, setCurrentChainId] = useState("");
   const [timer, setTimer] = useState('00:00');
   const logoutOfWeb3Modal = async () => {
@@ -80,6 +81,7 @@ const Interface = () => {
   useEffect(() => {
     if (web3Modal.cachedProvider) {
       loadWeb3Modal();
+      console.log("DDDDDDDDDDDDDDf")
     }
     // eslint-disable-next-line
   }, []);
@@ -100,11 +102,19 @@ const Interface = () => {
         const _trandingState = await Abi.methods.tradingState().call();
         setTradingState(_trandingState);
         const _jeetState = await Abi.methods.getJeetState().call();
-        setJeetState(_jeetState);
-        const _jeetPreventTime = await Abi.methods.jeetPreventTime.call();
-        setJeetProventTime(_jeetPreventTime);
-        const _blockTime =  await Abi.methods.getTimeStamp.call();
-        setBlockTime(_blockTime);
+        if (_jeetState !== jeetState) {
+          setJeetState(_jeetState);
+        }
+        const _blockTime =  await Abi.methods.getTimeStamp().call();
+        if(_blockTime !== blockTime) {
+          setBlockTime(_blockTime);
+        }
+        const _jeetPreventTime = await Abi.methods.jeetPreventTime().call();
+        if (jeetPreventTime !== _jeetPreventTime) {
+          setJeetProventTime(_jeetPreventTime);
+          console.log(_jeetPreventTime - _blockTime)
+          setCounterTime(Date.now() + (_jeetPreventTime - _blockTime) * 1000)
+        }
       }
     };
 
@@ -112,18 +122,17 @@ const Interface = () => {
   }, [isConnected, web3, Abi, refetch]);
 
   useEffect(() => {
-    const jeetTimer = async() => {
-      if(jeetState) return;
-      const restartTime = jeetPreventTime - blockTime;
-      if(restartTime > 0) {
-        startTimer(restartTime);
-      }
+    const jeetTimer = async () => {
+      if (jeetState) return;
+      const restartTime = counterTime - Date.now();
+      startTimer(restartTime);
     }
     jeetTimer();
   }, [refetch])
+
   const getTimeRemaining = (time) => {
-    const seconds = Math.floor(time % 60);
-    const minutes = Math.floor(time % 60);
+    const seconds = Math.floor((time / 1000) % 60);
+    const minutes = Math.floor((time / 1000) / 60);
     return {
       minutes, seconds
     };
@@ -183,7 +192,7 @@ const Interface = () => {
               <>
                 <div className={`state-icon ${tradingState ? jeetState ? "active-icon" : "inactive-icon" : "before-icon"}`} />
                 <div className="state-div">
-                  {tradingState ? <p className="state-statement">Active Selling!</p> : <p className="state-statement">Coming Soon!</p>}
+                  {tradingState ? jeetState ? <p className="state-statement">Active Selling!</p> : <p className="state-error">Stop Selling!</p> : <p className="state-statement">Coming Soon!</p>}
                 </div>
               </>
             ) : <p className="connection-state">Please change network!</p>
